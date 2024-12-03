@@ -6,6 +6,8 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource]
@@ -19,6 +21,8 @@ class Category
 
     
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 4)]
+    #[Assert\Regex("/^[A-Z][a-z]*(?:\s[A-Z][a-z]*)*$/", message: "Invalid category name")]
     #[Groups(['product.all','product.show','category.all','category.name'])]
     private ?string $name = null;
 

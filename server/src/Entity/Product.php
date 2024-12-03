@@ -6,6 +6,7 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 // #[ApiResource]
@@ -18,14 +19,18 @@ class Product
     private ?int $id = null;
     
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 5)]
+    #[Assert\Regex("/^[a-zA-Z0-9\s\-']{5,100}$/", message: "Invalid product name")]
     #[Groups(['product.all', 'product.create'])]
     private ?string $name = null;
     
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 5)]
     #[Groups(['product.show', 'product.create'])]
     private ?string $description = null;
     
     #[ORM\Column]
+    #[Assert\Positive]
     #[Groups(['product.all', 'product.show', 'product.create'])]
     private ?float $price = null;
 
