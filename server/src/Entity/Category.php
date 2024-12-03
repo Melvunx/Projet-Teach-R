@@ -14,12 +14,12 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['product.show', 'product.create'])]
+    #[Groups(['product.show', 'product.create','category.all'])]
     private ?int $id = null;
 
     
     #[ORM\Column(length: 255)]
-    #[Groups(['product.all','product.show'])]
+    #[Groups(['product.all','product.show','category.all','category.name'])]
     private ?string $name = null;
 
     public function getId(): ?int
