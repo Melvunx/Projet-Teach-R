@@ -1,8 +1,14 @@
+import Auth from "@pages/Auth";
+import Home from "@pages/Home";
+import { Route, Routes } from "react-router-dom";
+
 function App() {
   return (
-    <>
-      <div className="end-1 block bg-red-600"></div>
-    </>
+    <Routes>
+      <Route path="/home" element={<Home />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route path="*" element={<Home />} />
+    </Routes>
   );
 }
 

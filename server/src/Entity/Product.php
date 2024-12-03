@@ -50,7 +50,7 @@ class Product
     
     #[ORM\Column]
     #[Assert\NotBlank()]
-    #[Groups(['product.show'])]
+    #[Groups(['product.all','product.show'])]
     private ?\DateTimeImmutable $creationAt = null;
     
     #[ORM\ManyToOne]

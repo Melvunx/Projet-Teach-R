@@ -1,9 +1,15 @@
-import React from 'react';
+import { ShowedProduct } from "@/models/Product";
+import { columns } from "./layout/Columns";
+import { DataTable } from "./layout/DataTable";
 
-const Product = () => {
+type ProductProps = {
+  product: ShowedProduct[];
+};
+
+const Product = ({ product }: ProductProps) => {
   return (
-    <div>
-      
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={product} />
     </div>
   );
 };
