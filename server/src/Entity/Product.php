@@ -55,6 +55,7 @@ class Product
     
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Category must not be null.')]
     #[Groups(['product.all','product.show','product.create'])]
     private ?Category $category = null;
     

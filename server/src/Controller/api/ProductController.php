@@ -6,12 +6,13 @@ use App\Entity\Product;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Service\ValidatorErrorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api/product')]
 final class ProductController extends AbstractController{
@@ -37,7 +38,9 @@ final class ProductController extends AbstractController{
     public function create(
         Request $request,
         EntityManagerInterface $entityManager,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        ValidatorInterface $validator,
+        ValidatorErrorService $errorService
     ): Response 
     {
         $data = json_decode($request->getContent(), true);
@@ -61,6 +64,14 @@ final class ProductController extends AbstractController{
         $product->setCategory($category);
         $product->setCreationAt(new \DateTimeImmutable());
         $product->setUpdateAt(new \DateTimeImmutable());
+
+        $violations = $validator->validate($product);
+        if (count($violations) > 0) {
+            return $this->json([
+                'errors' => $errorService->formatValidationErrors($violations)
+            ], 400);
+        }
+
     
         // Sauvegarde
         $entityManager->persist($product);
@@ -81,7 +92,9 @@ final class ProductController extends AbstractController{
     public function edit(
         Request $request,
         Product $product,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
+        ValidatorErrorService $errorService
         ): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -90,6 +103,13 @@ final class ProductController extends AbstractController{
         $product->setName($data['name'] ?? $product->getName())
         ->setDescription($data['description'] ?? $product->getDescription())
         ->setPrice($data['price'] ?? $product->getPrice());
+
+        $violations = $validator->validate($product);
+        if (count($violations) > 0) {
+            return $this->json([
+                'errors' => $errorService->formatValidationErrors($violations)
+            ], 400);
+        }
         
         if (isset($data['category_id'])) {
             $category = $entityManager->getRepository(Category::class)->find($data['category_id']);
@@ -123,3 +143,5 @@ final class ProductController extends AbstractController{
                 ]);
     }
 }
+
+
