@@ -5,11 +5,15 @@ namespace App\Entity;
 // use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Webmozart\Assert\Assert as AssertAssert;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
 // #[ApiResource]
+#[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[UniqueEntity('name')]
+#[UniqueEntity('description')]
 class Product
 {
     #[ORM\Id]
@@ -19,8 +23,10 @@ class Product
     private ?int $id = null;
     
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 5)]
-    #[Assert\Regex("/^[a-zA-Z0-9\s\-']{5,100}$/", message: "Invalid product name")]
+    #[Assert\Sequentially([
+        new Assert\Length(min: 5),
+        new Assert\Regex("/^[a-zA-Z0-9\s\-']{5,100}$/", message: "Invalid product name"),
+    ])]
     #[Groups(['product.all', 'product.create'])]
     private ?string $name = null;
     
@@ -30,11 +36,20 @@ class Product
     private ?string $description = null;
     
     #[ORM\Column]
-    #[Assert\Positive]
+    #[Assert\NotBlank()]
+    #[Assert\Sequentially([
+        new Assert\Regex("/^(0|[1-9]\d*)(\.\d{1,2})?$/", message: "Invalid price"),
+        new Assert\Range(
+            min: 0.50,
+            max: 9999.99,
+            notInRangeMessage: 'You must be between {{ min }} euros and {{ max }} euros to enter'
+        ),
+    ])]
     #[Groups(['product.all', 'product.show', 'product.create'])]
     private ?float $price = null;
-
+    
     #[ORM\Column]
+    #[Assert\NotBlank()]
     #[Groups(['product.show'])]
     private ?\DateTimeImmutable $creationAt = null;
     
@@ -44,6 +59,7 @@ class Product
     private ?Category $category = null;
     
     #[ORM\Column]
+    #[Assert\NotBlank()]
     #[Groups(['product.show'])]
     private ?\DateTimeImmutable $updateAt = null;
 

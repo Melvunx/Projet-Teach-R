@@ -38,7 +38,8 @@ final class ProductController extends AbstractController{
         Request $request,
         EntityManagerInterface $entityManager,
         CategoryRepository $categoryRepository
-    ): Response {
+    ): Response 
+    {
         $data = json_decode($request->getContent(), true);
     
         // Vérification si la catégorie est définie
@@ -77,7 +78,11 @@ final class ProductController extends AbstractController{
 
 
     #[Route('/{id}/edit', name: 'app_product_edit', methods: ['PUT'])]
-    public function edit(Request $request,Product $product , CategoryRepository $repository, EntityManagerInterface $entityManager): Response
+    public function edit(
+        Request $request,
+        Product $product,
+        EntityManagerInterface $entityManager
+        ): Response
     {
         $data = json_decode($request->getContent(), true);
 
