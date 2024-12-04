@@ -34,13 +34,11 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  refreshProductData: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  refreshProductData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -90,7 +88,6 @@ export function DataTable<TData, TValue>({
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <AddProduit
-                refreshProductData={refreshProductData}
                 buttonName="Ajouter un produit"
                 className="bg-indigo-500/30"
               />

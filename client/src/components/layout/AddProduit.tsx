@@ -1,7 +1,8 @@
 import { Category } from "@/models/Category";
 import axios from "axios";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -29,21 +30,18 @@ import { Textarea } from "../ui/textarea";
 type AddProduitProps = {
   buttonName: string;
   className?: string;
-  refreshProductData: () => void;
 };
 
-const { VITE_ADD_PRODUCT, VITE_GET_CATEGORIES } = import.meta.env;
+const { VITE_ADD_PRODUCT } = import.meta.env;
 
-const AddProduit: React.FC<AddProduitProps> = ({
-  buttonName,
-  className,
-  refreshProductData,
-}) => {
+const AddProduit: React.FC<AddProduitProps> = ({ buttonName, className }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number>();
   const [category, setCategory] = useState<number>();
-  const [categories, setCategories] = useState<Category[]>([]);
+  // const [categories, setCategories] = useState<Category[]>([]);
+
+  const categories: Category[] = useSelector((state) => state.getCategories());
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,8 +55,6 @@ const AddProduit: React.FC<AddProduitProps> = ({
       });
       console.log(res.data);
 
-      refreshProductData();
-
       setName("");
       setDescription("");
       setPrice(25.99);
@@ -67,20 +63,6 @@ const AddProduit: React.FC<AddProduitProps> = ({
       console.error("Erreur lors de l'ajout du produit : ", error);
     }
   };
-
-  const fecthCategories = async () => {
-    try {
-      const res = await axios.get(VITE_GET_CATEGORIES);
-      const data = res.data;
-      setCategories(data);
-    } catch (error) {
-      console.error("Erreur lors de la récupération des catégories : ", error);
-    }
-  };
-
-  useEffect(() => {
-    fecthCategories();
-  }, []);
 
   return (
     <Dialog>

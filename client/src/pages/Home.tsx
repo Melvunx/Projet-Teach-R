@@ -1,31 +1,13 @@
 import { DataTable } from "@/components/DataTable";
 import { columns } from "@/components/layout/Columns";
-import { ShowedProduct } from "@/models/Product";
-import axios from "axios";
-import { useEffect, useState } from "react";
-
-const { VITE_GET_PRODUCTS } = import.meta.env;
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  const [products, setProducts] = useState<ShowedProduct[]>([]);
-
-  const fetchProduct = async () => {
-    try {
-      const res = await axios.get(VITE_GET_PRODUCTS);
-      const data = res.data;
-      setProducts(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProduct();
-  }, []);
+  const products = useSelector((state) => state.getProducts);
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={products} refreshProductData={fetchProduct} />
+      <DataTable columns={columns} data={products} />
     </div>
   );
 };
