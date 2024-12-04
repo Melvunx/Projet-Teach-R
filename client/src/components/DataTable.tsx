@@ -10,15 +10,18 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../ui/button";
+import AddProduit from "./layout/AddProduit";
+import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Input } from "../ui/input";
+} from "./ui/dropdown-menu";
+import { Input } from "./ui/input";
 import {
   Table,
   TableBody,
@@ -26,16 +29,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "./ui/table";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  refreshProductData: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  refreshProductData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -76,6 +81,23 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              <Plus className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuGroup>
+              <AddProduit
+                refreshProductData={refreshProductData}
+                buttonName="Ajouter un produit"
+                className="bg-indigo-500/30"
+              />
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
