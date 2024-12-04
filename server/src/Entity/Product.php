@@ -32,7 +32,7 @@ class Product
     
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 5)]
-    #[Groups(['product.show', 'product.create'])]
+    #[Groups(['product.all','product.show', 'product.create'])]
     private ?string $description = null;
     
     #[ORM\Column]

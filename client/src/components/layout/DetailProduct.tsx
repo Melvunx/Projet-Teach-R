@@ -16,7 +16,7 @@ type DetailProduitProps = {
   productId: number;
 };
 
-const EditProduct: React.FC<DetailProduitProps> = ({
+const DetailProduct: React.FC<DetailProduitProps> = ({
   buttonName,
   className,
   productId,
@@ -62,4 +62,4 @@ const EditProduct: React.FC<DetailProduitProps> = ({
   );
 };
 
-export default EditProduct;
+export default DetailProduct;

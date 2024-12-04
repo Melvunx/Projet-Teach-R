@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import DetailProiduit from "./DetailProduct";
 
 export const columns: ColumnDef<ShowedProduct>[] = [
   {
@@ -64,7 +65,9 @@ export const columns: ColumnDef<ShowedProduct>[] = [
   },
   {
     id: "actions",
-    cell: () => {
+    cell: ({ row }) => {
+      const product = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -77,7 +80,12 @@ export const columns: ColumnDef<ShowedProduct>[] = [
             <DropdownMenuLabel className="font-semibold">
               Actions
             </DropdownMenuLabel>
-            <DropdownMenuItem>Détail du produit</DropdownMenuItem>
+            <DropdownMenuItem>
+              <DetailProiduit
+                buttonName="Détail du produit"
+                productId={product.id}
+              />
+            </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-zinc-400/40" />
             <DropdownMenuItem className="font-medium text-indigo-500">
               Modifier le produit
