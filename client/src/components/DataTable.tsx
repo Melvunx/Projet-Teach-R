@@ -1,3 +1,4 @@
+import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -91,6 +92,8 @@ export function DataTable<TData, TValue>({
                 buttonName="Ajouter un produit"
                 className="bg-indigo-500/30"
               />
+              <DropdownMenuSeparator />
+
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>

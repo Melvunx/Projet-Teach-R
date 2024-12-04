@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
+  ADD_PRODUCT,
   DELETE_PRODUCT,
   EDIT_PRODUCT,
   GET_PRODUCTS,
@@ -21,6 +22,9 @@ export default function productReducer(
   switch (action.type) {
     case GET_PRODUCTS:
       return action.payload;
+    case ADD_PRODUCT:
+      // @ts-ignore
+      return [action.payload, ...state];
     case EDIT_PRODUCT:
       // @ts-ignore
       return state.map((product: ProductData) => {

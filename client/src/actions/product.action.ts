@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ProductData } from "@/components/layout/EditProduit";
 import { ShowedProduct } from "@/models/Product";
 import axios from "axios";
 
 export const GET_PRODUCTS = "GET_PRODUCTS";
+export const ADD_PRODUCT = "ADD_PRODUCT";
 export const EDIT_PRODUCT = "EDIT_PRODUCT";
 export const DELETE_PRODUCT = "DELETE_PRODUCT";
-const { VITE_GET_PRODUCTS } = import.meta.env;
+const { VITE_GET_PRODUCTS, VITE_ADD_PRODUCT } = import.meta.env;
 
 export const getProduct = () => {
   return async (
@@ -14,6 +16,20 @@ export const getProduct = () => {
     try {
       const res = await axios.get(VITE_GET_PRODUCTS);
       dispatch({ type: GET_PRODUCTS, payload: res.data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const addProduct = (data: ShowedProduct) => {
+  return async (
+    dispatch: (arg: { type: string; payload: ShowedProduct[] }) => void
+  ) => {
+    try {
+      await axios.post(VITE_ADD_PRODUCT, data);
+      // @ts-ignore
+      dispatch({ type: ADD_PRODUCT, payload: data });
     } catch (error) {
       console.error(error);
     }
