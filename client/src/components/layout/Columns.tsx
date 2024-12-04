@@ -1,6 +1,6 @@
 import { ShowedProduct } from "@/models/Product";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -18,7 +18,18 @@ export const columns: ColumnDef<ShowedProduct>[] = [
   },
   {
     accessorKey: "price",
-    header: () => <div className="text-center">Prix</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          className="flex justify-start"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Prix
+          <ArrowUpDown className="ml-2 size-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const price = parseFloat(row.getValue("price"));
       const formatedPrice = new Intl.NumberFormat("de-DE", {
@@ -26,7 +37,7 @@ export const columns: ColumnDef<ShowedProduct>[] = [
         currency: "EUR",
       }).format(price);
 
-      return <div className="text-center">{formatedPrice}</div>;
+      return <div className="ml-5 flex justify-start">{formatedPrice}</div>;
     },
   },
   {
