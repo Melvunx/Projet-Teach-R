@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Product, ShowedProduct } from "@/models/Product";
 import clsx from "clsx";
 import { useSelector } from "react-redux";
@@ -21,7 +22,8 @@ const DetailProduct: React.FC<DetailProduitProps> = ({
   className,
   productId,
 }) => {
-  const product: ShowedProduct = useSelector((state: any) =>
+  const product: ShowedProduct = useSelector((state) =>
+    // @ts-ignore
     state.getProducts.find((p: Product) => p.id === productId)
   );
   return (

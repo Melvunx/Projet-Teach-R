@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { deleteProduct } from "@/actions/product.action";
 import { ShowedProduct } from "@/models/Product";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { useDispatch } from "react-redux";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,
@@ -11,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import DetailProiduit from "./DetailProduct";
+import EditProduct from "./EditProduit";
 
 export const columns: ColumnDef<ShowedProduct>[] = [
   {
@@ -67,6 +71,8 @@ export const columns: ColumnDef<ShowedProduct>[] = [
     id: "actions",
     cell: ({ row }) => {
       const product = row.original;
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const dispatch = useDispatch();
 
       return (
         <DropdownMenu>
@@ -80,18 +86,38 @@ export const columns: ColumnDef<ShowedProduct>[] = [
             <DropdownMenuLabel className="font-semibold">
               Actions
             </DropdownMenuLabel>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.preventDefault(); // Empêche tout comportement par défaut, si nécessaire
+                e.stopPropagation(); // Stoppe la propagation de cet événement
+              }}
+            >
               <DetailProiduit
                 buttonName="Détail du produit"
                 productId={product.id}
               />
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-zinc-400/40" />
-            <DropdownMenuItem className="font-medium text-indigo-500">
-              Modifier le produit
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.preventDefault(); // Empêche tout comportement par défaut, si nécessaire
+                e.stopPropagation(); // Stoppe la propagation de cet événement
+              }}
+              className="font-medium text-indigo-500"
+            >
+              <EditProduct
+                buttonName="Modifier le produit"
+                productId={product.id}
+              />
             </DropdownMenuItem>
             <DropdownMenuItem className="font-semibold text-red-500">
-              Supprimer le produit
+              <Button
+                // @ts-ignore
+                onClick={() => dispatch(deleteProduct(product.id))}
+                variant="outline"
+              >
+                Supprimer le produit
+              </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
