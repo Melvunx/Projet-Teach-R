@@ -49,4 +49,8 @@ export default tseslint.config({
 })
 ```
 
-Install Symfony with the commande composer install
+Install Symfony with the commande composer install.
+
+I used React with TypeScript to have a solid code and limit the errors that I might encounter.
+
+I also use shadcn UI for the data table with products to have a modern and clean user interface.
